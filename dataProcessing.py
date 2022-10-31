@@ -12,5 +12,8 @@ class DataProcessor:
     def clean(self, df, test=False):
         return clean_data(df, test)
 
-    def features(self, df):
+    def features(self, df, test=False, store_avgs=None, store_stds=None):
+        if test:
+            return feature_engineer_test(df, store_avgs, store_stds)
+            
         return feature_engineer(df)

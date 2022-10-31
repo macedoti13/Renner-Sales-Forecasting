@@ -111,3 +111,21 @@ def feature_engineer(df):
     df['holiday'] = df['week_of_year'].apply(lambda x: 1 if x in holiday_weeks else 0)
 
     return df
+
+def feature_engineer_test(df, store_avgs, store_stds):
+    df = df.reset_index(drop=True)
+    df = df.drop(columns=['item', 'imputado'])
+    df = pd.get_dummies(df,columns=['tipo_loja'],drop_first=True, prefix='loja')
+    df['country'] = df['loja'].apply(get_country)
+    df['state'] = df['loja'].apply(get_state)
+    df['index'] = df['loja'].apply(get_index)
+    df = pd.get_dummies(df,columns=['country','state'],drop_first=True, prefix=['c','s'])
+    df.data = pd.to_datetime(df.data)
+    df['week_of_year'] = df.data.apply(get_week)
+    df['year'] = df.data.apply(get_year)
+    df['store_avg'] = df['loja'].apply(lambda x: store_avgs[x])
+    df['store_std'] = df['loja'].apply(lambda x: store_stds[x])
+    holiday_weeks = [1, 15, 16, 17, 36, 41, 44, 46, 51, 52]
+    df['holiday'] = df['week_of_year'].apply(lambda x: 1 if x in holiday_weeks else 0)
+
+    return df
