@@ -103,15 +103,6 @@ def feature_engineer(df):
     df.data = pd.to_datetime(df.data)
     df['week_of_year'] = df.data.apply(get_week)
     df['year'] = df.data.apply(get_year)
-
-    for i in range(1, len(df)):
-        if df.loc[i-1, 'loja'] == df.loc[i, 'loja']:
-            df.loc[i, 'last_week_sales'] = df.loc[i-1, 'venda']
-        else:
-            df.loc[i, 'last_week_sales'] = 0
-
-    df.loc[0, 'last_week_sales'] = 0
-    df.last_week_sales = df.last_week_sales.astype('int64')
     stores_avg = df.groupby('loja')['venda'].mean()
     df['store_avg'] = df['loja'].apply(lambda x: store_avg(x, stores_avg))
     stores_var = df.groupby('loja')['venda'].std()
