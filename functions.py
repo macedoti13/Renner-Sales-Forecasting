@@ -1,4 +1,6 @@
 import pandas as pd
+from sklearn.metrics import mean_squared_error, mean_absolute_error
+import numpy as np
 
 # data cleaning 
 
@@ -129,3 +131,20 @@ def feature_engineer_test(df, store_avgs, store_stds):
     df['holiday'] = df['week_of_year'].apply(lambda x: 1 if x in holiday_weeks else 0)
 
     return df
+
+
+# model evaluation 
+
+def mse(y_real, y_pred):
+    return mean_squared_error(y_real ,y_pred)
+
+def rmse(y_real, y_pred):
+    return np.sqrt(mse(y_real, y_pred))
+
+def mae(y_real, y_pred):
+    return mean_absolute_error(y_real, y_pred)
+
+def plot_diagnostics(y_real, y_pred):
+    print(f'MSE: {mse(y_real, y_pred)}')
+    print(f'RMSE: {rmse(y_real, y_pred)}')
+    print(f'MAE: {mae(y_real, y_pred)}')
