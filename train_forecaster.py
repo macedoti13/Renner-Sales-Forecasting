@@ -35,9 +35,9 @@ def build_model():
     'n_estimators': [100, 250, 500, 750, 1000],
     }   
 
-    #clf = RandomizedSearchCV(estimator=model, param_distributions=params)
+    clf = RandomizedSearchCV(estimator=model, param_distributions=params)
 
-    return model
+    return clf
 
 def evaluate_model(model, X_test, y_test):
     y_pred = model.predict(X_test)
