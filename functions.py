@@ -125,7 +125,7 @@ def feature_engineer_test(df, store_avgs, store_stds):
     df['year'] = df.data.apply(get_year)
     df['store_avg'] = df['loja'].apply(lambda x: store_avgs[x])
     df['store_std'] = df['loja'].apply(lambda x: store_stds[x])
-    holiday_weeks = [1, 15, 16, 17, 36, 41, 44, 46, 51, 52]
+    holiday_weeks = [1, 15, 16, 17, 19, 36, 41, 44, 46, 51, 52]
     df['holiday'] = df['week_of_year'].apply(lambda x: 1 if x in holiday_weeks else 0)
 
     return df
