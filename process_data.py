@@ -21,14 +21,14 @@ def transform_data(train_dataset, test_dataset, data_processor):
     return df_train, df_test
 
 def load_data(train_dataset, test_dataset):
-    train_dataset.to_csv('cleaned_data/training_data.csv')
-    test_dataset.to_csv('cleaned_data/testing_data.csv')
+    train_dataset.to_csv('cleaned_data/cleaned_training_data.csv')
+    test_dataset.to_csv('cleaned_data/cleaned_testing_data.csv')
 
 def main():
 
     dt = DataProcessor()
 
-    if len(sys.argv) == 2:
+    if len(sys.argv) == 3:
 
         train_dataset_filepath, test_dataset_filepath = sys.argv[1:]
 
