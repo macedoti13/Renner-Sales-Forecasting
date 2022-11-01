@@ -35,11 +35,11 @@ def build_model():
     'n_estimators': [100, 250, 500, 750, 1000],
     }   
 
-    clf = RandomizedSearchCV(estimator=model, param_distributions=params)
+    #clf = RandomizedSearchCV(estimator=model, param_distributions=params)
 
-    return clf
+    return model
 
-def evaluate_model(model, X_test, y_test):
+def evaluate_model(model, X_test):
     y_pred = model.predict(X_test)
     return y_pred
 
@@ -68,7 +68,7 @@ def main():
         model.fit(X_train, y_train, eval_set=[(X_train, y_train), (X_test, y_test)], verbose=False)
 
         print('Evaluating model...')
-        y_pred = evaluate_model(model, X_test, y_test)
+        y_pred = evaluate_model(model, X_test)
 
         original_testing_dataset.loc[:, 'forecasted'] = y_pred
         original_testing_dataset.to_csv('data/forecasted_data.csv')
