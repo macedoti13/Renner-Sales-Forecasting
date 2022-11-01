@@ -65,7 +65,7 @@ def clean_data(df, test = False):
     return df
 
 
-# features engineering
+# feature engineering
 
 def get_country(str):
     parts = str.split('_')[1:]
