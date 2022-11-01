@@ -1,7 +1,7 @@
 import pickle
 import sys
 import pandas as pd
-from sklearn.model_selection import RandomizedSearchCV
+from sklearn.model_selection import RandomizedSearchCV, TimeSeriesSplit
 from xgboost import XGBRegressor
 from functions import plot_diagnostics
 from dataProcessing import DataProcessor
@@ -35,9 +35,11 @@ def build_model():
     'n_estimators': [100, 250, 500, 750, 1000],
     }   
 
-    #clf = RandomizedSearchCV(estimator=model, param_distributions=params)
+    cv = TimeSeriesSplit(n_splits=5)
 
-    return model
+    clf = RandomizedSearchCV(estimator=model, param_distributions=params, cv=cv)
+
+    return clf
 
 def evaluate_model(model, X_test):
     y_pred = model.predict(X_test)
