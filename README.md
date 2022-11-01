@@ -15,7 +15,7 @@
 2. Creating an Machine Learning Pipeline that trains a regression model in order the predict the number of sales of a product
 
 ## The Problem that Needed to be Solved <a name="problem"><a/>
-**When a natural disaster happens, the disaster response professionals need to act quickly in order to save as much lives as they can. In order to do there jobs correctly, they need to read milions of messages they received, either direct or from social media. The problem is that it's not easy to filter for disaster-related messages through humam scan or simple techniques like keyword search. So point of the project is to build a supervised machine learning model that can automatically classify the messages into the correct disaster category, if there is one.**
+**Predicting how many sales of a product are going to happen in each store of your business is extremelly useful. That way a company can produce just the right amount of each product and that, cut off unnecessary costs in production. With that in mind, Renner, one of the biggest clothing companies in Latim America, gave me a dataset with the weekly sales of one of their products in more than 400 stores. My objective was to build a machine learning model to forecast the sales for the next two months.**
 
 ## File Descriptions <a name="files"></a>
 1. data
