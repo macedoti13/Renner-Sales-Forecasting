@@ -1,10 +1,11 @@
 import pickle
 import sys
 import pandas as pd
-from sklearn.model_selection import RandomizedSearchCV, TimeSeriesSplit
+from sklearn.model_selection import GridSearchCV, TimeSeriesSplit
 from xgboost import XGBRegressor
 from functions import plot_diagnostics
 from dataProcessing import DataProcessor
+import pickle
 
 def load_data(train_dataset_filepath, test_dataset_filepath, data_processor):
     df_train = data_processor.read_data(train_dataset_filepath)
@@ -16,8 +17,8 @@ def load_data(train_dataset_filepath, test_dataset_filepath, data_processor):
     return df_train, df_test
 
 def train_test_split(training_data, testing_data):
-    X_train = training_data.iloc[:, 3:]
-    X_test = testing_data.iloc[:, 3:]
+    X_train = training_data.iloc[:, 4:]
+    X_test = testing_data.iloc[:, 4:]
 
     y_train = training_data['venda']
     y_test = testing_data['venda']
@@ -26,18 +27,16 @@ def train_test_split(training_data, testing_data):
 
 def build_model():
 
-    model = XGBRegressor()
+    model = XGBRegressor(n_estimators=10000, learning_rate=0.001, early_stopping_rounds=50)
 
     params = {
-    'learning_rate': [0.01, 0.1, 0.2],
-    'max_depth': [3, 6, 10, 12],
-    'subsample': [0.5, 0.7, 1],
-    'n_estimators': [100, 250, 500, 750, 1000],
+    'learning_rate': [0.01, 0.1],
+    'max_depth': [6, 10, 12]
     }   
 
     cv = TimeSeriesSplit(n_splits=5)
 
-    clf = RandomizedSearchCV(estimator=model, param_distributions=params, cv=cv)
+    clf = GridSearchCV(estimator=model, param_grid=params, cv=cv)
 
     return clf
 
@@ -67,17 +66,17 @@ def main():
         model = build_model()
 
         print('Training model...')
-        model.fit(X_train, y_train, eval_set=[(X_train, y_train), (X_test, y_test)], verbose=False)
+        model.fit(X_train, y_train, eval_set=[(X_train, y_train), (X_test, y_test)], verbose=10)
 
         print('Evaluating model...')
-        y_pred = evaluate_model(model, X_test)
+        forecasting = evaluate_model(model, X_test)
 
-        original_testing_dataset.loc[:, 'forecasted'] = y_pred
-        original_testing_dataset.to_csv('data/forecasted_data.csv')
+        original_testing_dataset['forecasted'] = forecasting
 
         print('Saving Forecasted Data...\n')
+        original_testing_dataset.to_csv('data/forecasted_data.csv')
 
-        plot_diagnostics(y_test, y_pred)
+        plot_diagnostics(y_test, forecasting)
 
         print('\nSaving model...\n    MODEL: {}'.format(modelpath))
         save_model(model, modelpath)

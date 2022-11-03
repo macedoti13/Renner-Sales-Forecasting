@@ -139,7 +139,7 @@ def mse(y_real, y_pred):
     return mean_squared_error(y_real ,y_pred)
 
 def rmse(y_real, y_pred):
-    return np.sqrt(mse(y_real, y_pred))
+    return np.sqrt(mean_squared_error(y_real, y_pred))
 
 def mae(y_real, y_pred):
     return mean_absolute_error(y_real, y_pred)
